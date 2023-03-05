@@ -1,5 +1,5 @@
-import dbConnect from "../../../../db/connect";
-import Card from "../../../../db/models/Card";
+import dbConnect from "../../../db/connect";
+import Card from "../../../db/models/Card";
 
 export default async function handler(request, response) {
   await dbConnect();
@@ -7,6 +7,7 @@ export default async function handler(request, response) {
     try {
       const cardData = request.body;
       const card = new Card(cardData);
+      console.log("card", card);
 
       await card.save();
       response.status(201).json({ status: "Card created" });

@@ -1,37 +1,37 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Card from "../../components/Card";
-import { StyledButton } from "../../components/Button/Button.styled";
+import Card from "../components/Card";
+import { StyledButton } from "../components/Button/Button.styled";
 import { useRouter } from "next/router";
 
 export default function Home() {
-  const [cardList, setCardList] = useState([]);
+  // const [cardList, setCardList] = useState([]);
 
-  // const [isLoading, setLoading] = useState(false);
-  const router = useRouter();
-  const { id } = router.query;
+  // // const [isLoading, setLoading] = useState(false);
+  // const router = useRouter();
+  // const { id } = router.query;
 
-  function refreshPage() {
-    const fetchData = async () => {
-      const data = await fetch("/api/cards");
-      const cards = await data.json();
-      setCardList(cards);
-    };
-    fetchData().catch(console.error);
-  }
+  // function refreshPage() {
+  //   const fetchData = async () => {
+  //     const data = await fetch("/api/cards");
+  //     const cards = await data.json();
+  //     setCardList(cards);
+  //   };
+  //   fetchData().catch(console.error);
+  // }
 
-  useEffect(() => {
-    refreshPage();
-  }, []);
+  // useEffect(() => {
+  //   refreshPage();
+  // }, []);
 
-  if (!cardList) {
-    return <h1>Loading...</h1>;
-  }
+  // if (!cardList) {
+  //   return <h1>Loading...</h1>;
+  // }
 
-  function addCard(newCard) {
-    setCardList([newCard, ...cardList]);
-    refreshPage();
-  }
+  // function addCard(newCard) {
+  //   setCardList([newCard, ...cardList]);
+  //   refreshPage();
+  // }
 
   // //   const { data } = useSWR(id ? `//cards/${id}` : null);
 
