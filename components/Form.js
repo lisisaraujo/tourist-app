@@ -3,15 +3,15 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 
 export default function Form() {
-  const cards = useSWR("/api/cards");
   const router = useRouter();
+  const places = useSWR("/api/cards");
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     const formData = new FormData(event.target);
+
     const newCard = Object.fromEntries(formData);
-    console.log(newCard);
+    console.log("newCard", newCard);
 
     const response = await fetch("/api/cards/create", {
       method: "POST",
@@ -23,69 +23,45 @@ export default function Form() {
 
     if (response.ok) {
       await response.json();
-      cards.mutate();
+      places.mutate();
 
       event.target.reset();
     } else {
       console.error(`Error: ${response.status}`);
     }
-
-    event.target.reset();
   }
-
   return (
-    <EntryForm onSubmit={handleSubmit}>
-      <InputWrapper>
-        <label htmlFor="name">Name:</label>
-        <input type="text" id="name" name="fname" />
-        <label htmlFor="image-url">Image Url:</label>
-        <input type="text" id="image-url" name="image-url" />
-        <label htmlFor="location">Location:</label>
-        <input type="text" id="location" name="location" />
-        <label htmlFor="map-location">Map Location:</label>
-        <input type="text" id="map-location" name="map-location" />
-        <label htmlFor="description">Description:</label>
-        <input type="text" id="map-location" name="map-location" />
-        <button onClick={() => router.push(`/`)}>Save Place</button>
-      </InputWrapper>
-    </EntryForm>
+    <div>
+      <EntryForm onSubmit={handleSubmit}>
+        <InputWrapper>
+          <label htmlFor="name">Name</label>
+          <input id="name" name="name"></input>
+          <label htmlFor="image">Image URL</label>
+          <input id="image" name="image"></input>
+          <label htmlFor="location">Location</label>
+          <input id="location" name="location"></input>
+          <label htmlFor="map-url">Map URL</label>
+          <input id="map-url" name="map-url"></input>
+          <label htmlFor="description">Description</label>
+          <input id="description" name="description"></input>
+          <button onClick={() => router.push("/")}>Save Place</button>
+        </InputWrapper>
+      </EntryForm>
+    </div>
   );
 }
 
 const EntryForm = styled.form`
-  display: flex;
   justify-content: center;
-  width: 100vw;
-  height: 70px;
-  position: fixed;
-  bottom: 0;
 `;
 
 const InputWrapper = styled.div`
-  width: calc(100% - 100px);
+  border: solid;
   display: flex;
-  justify-content: space-around;
-
-  input {
-    border: none;
-    padding: 10px;
-    border-top: 2px solid #252629;
-    height: 100%;
-    width: 100%;
-  }
-  input:focus {
-    outline: none;
-  }
-`;
-
-const Button = styled.button`
-  background-color: white;
-  color: #fe4b13;
-  border: none;
-  border-radius: 7px;
-
-  svg {
-    height: 48px;
-    width: 48px;
-  }
+  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+  height: 100%;
+  margin-left: 10%;
+  margin-right: 10%;
 `;
