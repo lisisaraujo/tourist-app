@@ -1,5 +1,5 @@
-import dbConnect from "../../../db/connect";
-import Card from "../../../db/models/Card";
+import dbConnect from "../../../../db/connect";
+import Card from "../../../../db/models/Card";
 
 export default async function handler(request, response) {
   await dbConnect();
@@ -12,7 +12,7 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "PUT") {
-    const card = await Card.findByIdAndUpdate(id, request.body);
+    const card = await Card.findByIdAndUpdate(id);
     console.log(card);
     return response.status(200).json(card);
   }

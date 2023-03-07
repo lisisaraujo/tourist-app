@@ -4,26 +4,95 @@ import {
   RiCheckboxCircleLine,
 } from "react-icons/ri";
 import styled from "styled-components";
-
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
-export default function Card({ cardList }) {
+export default function Card({
+  name,
+  location,
+  image,
+  mapURL,
+  onRemoveCard,
+  onUpdateCard,
+  id,
+  description,
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  // console.log("++++++++++++", id);
+
+  const router = useRouter();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formElements = event.target.elements;
+
+    const updatedCard = {
+      name: formElements.name.value,
+      location: formElements.location.value,
+      image: formElements.image.value,
+      mapURL: formElements.mapURL.value,
+      description: formElements.description.value,
+      id: id,
+    };
+    onUpdateCard(updatedCard, id);
+    console.log("idididiidid", id);
+    setIsEditing(false);
+  }
+
   return (
     <CardWrapper>
-      {cardList.map((card) => (
-        <section className="card" key={card._id}>
-          <h2>{card.name}</h2>
-          <Image
-            src={card.image}
-            height={500}
-            width={400}
-            alt={card.name}
-          ></Image>
-          <p>{card.location}</p>
-        </section>
-      ))}
+      {isEditing && (
+        <form
+          onSubmit={() => {
+            handleSubmit;
+          }}
+        >
+          <label htmlFor="name">Name</label>
+          <input id="name" name="name" defaultValue={name}></input>
+          <label htmlFor="image">Image URL</label>
+          <input id="image" name="image" defaultValue={image}></input>
+          <label htmlFor="location">Location</label>
+          <input id="location" name="location" defaultValue={location}></input>
+          <label htmlFor="mapURL">Map URL</label>
+          <input id="mapURL" name="mapURL" defaultValue={mapURL}></input>
+          <label htmlFor="description">Description</label>
+          <input
+            id="description"
+            name="description"
+            defaultValue={description}
+          ></input>
+          <button onClick={() => router.push("/")}>Save Changes</button>
+        </form>
+      )}
+      {!isEditing && (
+        <>
+          <h2>{name}</h2>
+          <Image src={image} height={500} width={400} alt={name}></Image>
+          <p>{location}</p>
+          <DeleteIcon onClick={() => onRemoveCard(id)} />
+          <EditIcon onClick={() => setIsEditing(true)} />
+        </>
+      )}
     </CardWrapper>
   );
+}
+
+{
+  /* <CardWrapper>
+{cardList.map((card) => (
+  <section className="card" key={card._id}>
+    <h2>{card.name}</h2>
+    <Image
+      src={card.image}
+      height={500}
+      width={400}
+      alt={card.name}
+    ></Image>
+    <p>{card.location}</p>
+  </section>
+))}
+</CardWrapper> */
 }
 
 const CardWrapper = styled.li`

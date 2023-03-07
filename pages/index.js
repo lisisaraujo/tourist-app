@@ -11,7 +11,7 @@ export default function Home() {
   const router = useRouter();
   const { id } = router.query;
 
-  useEffect(() => {
+  function refreshPage() {
     const fetchData = async () => {
       setLoading(true);
       const data = await fetch("/api/cards");
@@ -20,6 +20,10 @@ export default function Home() {
       setLoading(false);
     };
     fetchData().catch(console.error);
+  }
+
+  useEffect(() => {
+    refreshPage();
   }, []);
 
   if (isLoading) {
@@ -29,10 +33,53 @@ export default function Home() {
     return <h1>No data</h1>;
   }
 
+  async function handleRemoveCard(id) {
+    console.log("ANOTHER ONE", id);
+    const response = await fetch(`/api/cards/${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      await response.json();
+    } else {
+      console.error(`Error: ${response.status}`);
+    }
+    refreshPage();
+  }
+
+  async function handleUpdateCard(updatedCard, id) {
+    const response = await fetch(`/api/cards/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedCard),
+    });
+    if (response.ok) {
+      await response.json();
+    } else {
+      console.error(`Error: ${response.status}`);
+    }
+  }
+
   return (
     <BoardWrapper>
       <>
-        <Card cardList={cardList} />
+        {/* <Card cardList={cardList} /> */}
+        <CardGrid>
+          {cardList.map((card) => {
+            // console.log(card);
+            return (
+              <Card
+                onClick={() => router.push(`/${id}`)}
+                key={card._id}
+                name={card.name}
+                image={card.image}
+                location={card.location}
+                description={card.description}
+                onRemoveCard={() => handleRemoveCard(card._id)}
+                onUpdateCard={handleUpdateCard}
+                id={card._id}
+              />
+            );
+          })}
+        </CardGrid>
         <StyledButton type="button" onClick={() => router.push("/create")}>
           + places
         </StyledButton>

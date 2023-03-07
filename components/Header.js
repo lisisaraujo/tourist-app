@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function Header() {
   return (
     <nav>
-      <Headline>Tour Guide</Headline>
+      <Headline className="header">Tour Guide</Headline>
     </nav>
   );
 }

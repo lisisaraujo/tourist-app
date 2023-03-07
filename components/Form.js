@@ -40,8 +40,8 @@ export default function Form() {
           <input id="image" name="image"></input>
           <label htmlFor="location">Location</label>
           <input id="location" name="location"></input>
-          <label htmlFor="map-url">Map URL</label>
-          <input id="map-url" name="map-url"></input>
+          <label htmlFor="mapURL">Map URL</label>
+          <input id="mapURL" name="mapURL"></input>
           <label htmlFor="description">Description</label>
           <input id="description" name="description"></input>
           <button onClick={() => router.push("/")}>Save Place</button>
